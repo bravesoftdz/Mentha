@@ -45,6 +45,7 @@ namespace Mentha.Banks.Tangerine {
                     if (SavedQuestion == null) {
                         // Not previously answered, so prompt them now
                         using (var Form = new ChallengeQuestionForm(ChallengeQuestion)) {
+                            Form.Text += $" ({profile.Description})";
                             if (Form.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
                                 ChallengeAnswer = Form.Answer;
                             } else {

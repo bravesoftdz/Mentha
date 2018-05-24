@@ -1,6 +1,5 @@
 ﻿// TODOX A debug log window -- all activities should log to a global list, which can then be populated in a richtextbox on demand
 // TODOX Multi-column output so the window is wider and less tall?
-// TODOX Don't allow Download All to be clicked while downloading is underway (presumably bad things will happen)
 
 using Mentha.Banks;
 using Mentha.Code;
@@ -114,9 +113,9 @@ namespace Mentha.Forms {
 
 RetryLoad:
 
-                // Load saved profiles
-                // TODOX This is slow because key stretching is done per-file.  Maybe there should be Globals.Profiles, and that
-                //       should be saved into one single data file?  It's not like individual files offers any benefit
+// Load saved profiles
+// TODOX This is slow because key stretching is done per-file.  Maybe there should be Globals.Profiles, and that
+//       should be saved into one single data file?  It's not like individual files offers any benefit
                 int CryptographicExceptions = 0;
                 int FileCount = 0;
                 int OtherExceptions = 0;
@@ -180,8 +179,20 @@ RetryLoad:
         }
 
         private async void tsbDownloadAll_ClickAsync(object sender, EventArgs e) {
+            // Get and handle TD profiles first (stuffing input doesn't work well if a tangerine security question pops up over the browser window)
+            // Must use 'await' so they're handled one at a time
             foreach (ListViewGroup Group in lvProfiles.Groups) {
-                await DownloadGroupAsync(Group);
+                if ((Group.Tag != null) && ((Group.Tag as Profile).Bank == "TD")) {
+                    await DownloadGroupAsync(Group);
+                }
+            }
+
+            // Then handle non-TD all at once
+            // No 'await' required, the Bank objects are thread-safe
+            foreach (ListViewGroup Group in lvProfiles.Groups) {
+                if ((Group.Tag != null) && ((Group.Tag as Profile).Bank != "TD")) {
+                    DownloadGroupAsync(Group);
+                }
             }
         }
     }
