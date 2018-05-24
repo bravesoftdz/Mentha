@@ -1,5 +1,4 @@
 ﻿// TODOX A debug log window -- all activities should log to a global list, which can then be populated in a richtextbox on demand
-// TODOX Multi-column output so the window is wider and less tall?
 // TODOX Edit/Delete profiles
 // TODOX Load/Save Globals.Settings.Form*
 
@@ -58,10 +57,20 @@ namespace Mentha.Forms {
                         if (Accounts.Any()) {
                             lvProfiles.Items.Remove(Group.Items[0]);
 
+                            int Index = 1;
                             foreach (var Account in Accounts) {
-                                var NewListItem = new ListViewItem(Account.Name, Group);
-                                NewListItem.SubItems.Add(Account.Balance.ToString("C"));
-                                lvProfiles.Items.Add(NewListItem);
+                                if (Index++ % 2 == 1) {
+                                    // Odd index means start a new row
+                                    var NewListItem = new ListViewItem(Account.Name, Group);
+                                    NewListItem.SubItems.Add(Account.Balance.ToString("C"));
+                                    lvProfiles.Items.Add(NewListItem);
+
+                                } else {
+                                    // Even index means add to last row
+                                    var ExistingListItem = Group.Items[Group.Items.Count - 1];
+                                    ExistingListItem.SubItems.Add(Account.Name);
+                                    ExistingListItem.SubItems.Add(Account.Balance.ToString("C"));
+                                }
                             }
                         } else {
                             Group.Items[0].Text = "No accounts found for this profile!";

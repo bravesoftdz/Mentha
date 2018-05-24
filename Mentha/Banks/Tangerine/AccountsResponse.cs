@@ -16,7 +16,7 @@ namespace Mentha.Banks.Tangerine {
         public string type { get; set; }
 
         public double GetBalance() {
-            // TODOX Don't have a CREDIT account with Tangerine, so not sure if they need the sign flipped like CIBC
+            // TODOZ Don't have a CREDIT account with Tangerine, so not sure if they need the sign flipped like CIBC
             return account_balance;
         }
 

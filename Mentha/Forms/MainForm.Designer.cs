@@ -36,6 +36,8 @@
             this.lvProfiles = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.MainMenu.SuspendLayout();
             this.ToolStrip.SuspendLayout();
             this.SuspendLayout();
@@ -47,7 +49,7 @@
             this.mnuHelp});
             this.MainMenu.Location = new System.Drawing.Point(0, 0);
             this.MainMenu.Name = "MainMenu";
-            this.MainMenu.Size = new System.Drawing.Size(464, 24);
+            this.MainMenu.Size = new System.Drawing.Size(891, 24);
             this.MainMenu.TabIndex = 0;
             this.MainMenu.Text = "menuStrip1";
             // 
@@ -89,7 +91,7 @@
             this.tsbDownloadAll});
             this.ToolStrip.Location = new System.Drawing.Point(0, 24);
             this.ToolStrip.Name = "ToolStrip";
-            this.ToolStrip.Size = new System.Drawing.Size(464, 25);
+            this.ToolStrip.Size = new System.Drawing.Size(891, 25);
             this.ToolStrip.TabIndex = 1;
             this.ToolStrip.Text = "toolStrip1";
             // 
@@ -120,14 +122,16 @@
             // 
             this.lvProfiles.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
-            this.columnHeader2});
+            this.columnHeader2,
+            this.columnHeader3,
+            this.columnHeader4});
             this.lvProfiles.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lvProfiles.FullRowSelect = true;
             this.lvProfiles.GridLines = true;
             this.lvProfiles.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             this.lvProfiles.Location = new System.Drawing.Point(0, 49);
             this.lvProfiles.Name = "lvProfiles";
-            this.lvProfiles.Size = new System.Drawing.Size(464, 392);
+            this.lvProfiles.Size = new System.Drawing.Size(891, 562);
             this.lvProfiles.TabIndex = 2;
             this.lvProfiles.UseCompatibleStateImageBehavior = false;
             this.lvProfiles.View = System.Windows.Forms.View.Details;
@@ -141,14 +145,23 @@
             // columnHeader2
             // 
             this.columnHeader2.Text = "Balance";
-            this.columnHeader2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.columnHeader2.Width = 100;
+            // 
+            // columnHeader3
+            // 
+            this.columnHeader3.Text = "Name";
+            this.columnHeader3.Width = 325;
+            // 
+            // columnHeader4
+            // 
+            this.columnHeader4.Text = "Balance";
+            this.columnHeader4.Width = 100;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(464, 441);
+            this.ClientSize = new System.Drawing.Size(891, 611);
             this.Controls.Add(this.lvProfiles);
             this.Controls.Add(this.ToolStrip);
             this.Controls.Add(this.MainMenu);
@@ -180,6 +193,8 @@
         private System.Windows.Forms.ToolStripButton tsbDownloadAll;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem mnuHelpAbout;
+        private System.Windows.Forms.ColumnHeader columnHeader3;
+        private System.Windows.Forms.ColumnHeader columnHeader4;
     }
 }
 
