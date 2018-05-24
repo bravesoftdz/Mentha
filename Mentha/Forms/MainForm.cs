@@ -1,5 +1,7 @@
 ﻿// TODOX A debug log window -- all activities should log to a global list, which can then be populated in a richtextbox on demand
 // TODOX Multi-column output so the window is wider and less tall?
+// TODOX Edit/Delete profiles
+// TODOX Load/Save Globals.Settings.Form*
 
 using Mentha.Banks;
 using Mentha.Code;
@@ -7,9 +9,7 @@ using Microsoft.Win32;
 using System;
 using System.Data;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -25,6 +25,19 @@ namespace Mentha.Forms {
                 var ExeName = Process.GetCurrentProcess().ProcessName + ".exe";
                 Key.SetValue(ExeName, 99999, RegistryValueKind.DWord);
             }
+        }
+
+        private void AddProfileToListView(Profile profile) {
+            // Add the group to the ListView
+            var NewGroup = new ListViewGroup($"{profile.Bank} - {profile.Description}") {
+                Name = profile.Id,
+                Tag = profile,
+            };
+            lvProfiles.Groups.Add(NewGroup);
+
+            // Add a placeholder to the group
+            var NewListItem = new ListViewItem("Double click to download accounts for this profile...", NewGroup);
+            lvProfiles.Items.Add(NewListItem);
         }
 
         private async Task DownloadGroupAsync(ListViewGroup Group) {
@@ -61,33 +74,6 @@ namespace Mentha.Forms {
             }
         }
 
-        private void LoadProfile(string fileId) {
-            // Check if we need to prompt for the master password
-            if (string.IsNullOrWhiteSpace(Globals.MasterPassword)) {
-                using (var Form = new EnterMasterPasswordForm()) {
-                    if (Form.ShowDialog() != DialogResult.OK) {
-                        MessageBox.Show("A Master Password is required to load your saved profiles\r\n\r\nMentha will now terminate.");
-                        Application.Exit();
-                        return;
-                    }
-                }
-            }
-
-            // Decrypt the file
-            var Profile = Code.Profile.Load(fileId);
-
-            // Add the group to the ListView
-            var NewGroup = new ListViewGroup($"{Profile.Bank} - {Profile.Description}") {
-                Name = fileId,
-                Tag = Profile,
-            };
-            lvProfiles.Groups.Add(NewGroup);
-
-            // Add a placeholder to the group
-            var NewListItem = new ListViewItem("Double click to download accounts for this profile...", NewGroup);
-            lvProfiles.Items.Add(NewListItem);
-        }
-
         private async void lvProfiles_DoubleClickAsync(object sender, EventArgs e) {
             if (lvProfiles.SelectedItems.Count > 0) {
                 await DownloadGroupAsync(lvProfiles.SelectedItems[0].Group);
@@ -105,42 +91,11 @@ namespace Mentha.Forms {
                     tsbAddProfile.DropDownItems.Add(DD);
                 }
 
-                // Create data directory, if it does not yet exist
-                var DataDirectory = Globals.GetAppDataDirectory();
-                if (!Directory.Exists(DataDirectory)) {
-                    Directory.CreateDirectory(DataDirectory);
-                }
-
-RetryLoad:
-
-// Load saved profiles
-// TODOX This is slow because key stretching is done per-file.  Maybe there should be Globals.Profiles, and that
-//       should be saved into one single data file?  It's not like individual files offers any benefit
-                int CryptographicExceptions = 0;
-                int FileCount = 0;
-                int OtherExceptions = 0;
-                foreach (var Filename in Directory.EnumerateFiles(DataDirectory)) {
-                    FileCount += 1;
-
-                    try {
-                        LoadProfile(Path.GetFileNameWithoutExtension(Filename));
-                    } catch (CryptographicException) {
-                        CryptographicExceptions += 1;
-                    } catch (Exception) {
-                        OtherExceptions += 1;
-                    }
+                // Add saved profiles
+                foreach (var Profile in Globals.Settings.Profiles) {
+                    AddProfileToListView(Profile);
                 }
                 SortGroups();
-
-                // Check for exceptions while loading the profiles
-                if (CryptographicExceptions == FileCount) {
-                    MessageBox.Show("That doesn't appear to be the correct Master Password, please try again.");
-                    Globals.MasterPassword = string.Empty;
-                    goto RetryLoad; // Yeah I just used a goto
-                } else if (CryptographicExceptions + OtherExceptions > 0) {
-                    MessageBox.Show($"Exceptions were encountered while loading your saved profile information:\r\n\r\nFiles Read: {FileCount}\r\nCryptographic Exceptions: {CryptographicExceptions}\r\nOther Exceptions: {OtherExceptions}\r\n\r\nCryptographic Exceptions are likely caused by entering an invalid Master Password, or corrupt data file.\r\nOther Exceptions are unexpected and unknown in nature.\r\n\r\nMentha will now terminate.");
-                    Application.Exit();
-                }
             }
         }
 
@@ -152,10 +107,6 @@ RetryLoad:
             using (var Form = new AboutForm()) {
                 Form.ShowDialog();
             }
-        }
-
-        private void mnuHelpDataDirectory_Click(object sender, EventArgs e) {
-            Process.Start(Globals.GetAppDataDirectory());
         }
 
         private void SortGroups() {
@@ -172,7 +123,12 @@ RetryLoad:
             var Bank = (sender as ToolStripMenuItem).Text;
             using (var Form = new ProfileForm(Bank)) {
                 if (Form.ShowDialog() == DialogResult.OK) {
-                    LoadProfile(Form.FileId);
+                    // Save new entry
+                    Globals.Settings.Profiles.Add(Form.Profile);
+                    Globals.Settings.Save();
+
+                    // Update the listview
+                    AddProfileToListView(Form.Profile);
                     SortGroups();
                 }
             }

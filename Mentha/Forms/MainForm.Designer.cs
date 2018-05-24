@@ -29,8 +29,6 @@
             this.mnuFileExit = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuHelpAbout = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
-            this.mnuHelpDataDirectory = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStrip = new System.Windows.Forms.ToolStrip();
             this.tsbAddProfile = new System.Windows.Forms.ToolStripDropDownButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -71,9 +69,7 @@
             // mnuHelp
             // 
             this.mnuHelp.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mnuHelpAbout,
-            this.toolStripMenuItem1,
-            this.mnuHelpDataDirectory});
+            this.mnuHelpAbout});
             this.mnuHelp.Name = "mnuHelp";
             this.mnuHelp.Size = new System.Drawing.Size(44, 20);
             this.mnuHelp.Text = "&Help";
@@ -81,21 +77,9 @@
             // mnuHelpAbout
             // 
             this.mnuHelpAbout.Name = "mnuHelpAbout";
-            this.mnuHelpAbout.Size = new System.Drawing.Size(149, 22);
+            this.mnuHelpAbout.Size = new System.Drawing.Size(180, 22);
             this.mnuHelpAbout.Text = "&About";
             this.mnuHelpAbout.Click += new System.EventHandler(this.mnuHelpAbout_Click);
-            // 
-            // toolStripMenuItem1
-            // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(146, 6);
-            // 
-            // mnuHelpDataDirectory
-            // 
-            this.mnuHelpDataDirectory.Name = "mnuHelpDataDirectory";
-            this.mnuHelpDataDirectory.Size = new System.Drawing.Size(149, 22);
-            this.mnuHelpDataDirectory.Text = "&Data Directory";
-            this.mnuHelpDataDirectory.Click += new System.EventHandler(this.mnuHelpDataDirectory_Click);
             // 
             // ToolStrip
             // 
@@ -190,14 +174,12 @@
         private System.Windows.Forms.ToolStrip ToolStrip;
         private System.Windows.Forms.ToolStripDropDownButton tsbAddProfile;
         private System.Windows.Forms.ToolStripMenuItem mnuHelp;
-        private System.Windows.Forms.ToolStripMenuItem mnuHelpDataDirectory;
         private System.Windows.Forms.ListView lvProfiles;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.ToolStripButton tsbDownloadAll;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem mnuHelpAbout;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
     }
 }
 

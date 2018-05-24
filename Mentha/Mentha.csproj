@@ -72,6 +72,7 @@
     <Compile Include="Code\Profile.cs" />
     <Compile Include="Code\Globals.cs" />
     <Compile Include="Code\Account.cs" />
+    <Compile Include="Code\Settings.cs" />
     <Compile Include="Forms\AboutForm.cs">
       <SubType>Form</SubType>
     </Compile>

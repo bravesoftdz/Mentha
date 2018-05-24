@@ -4,11 +4,7 @@ using System.Windows.Forms;
 
 namespace Mentha.Forms {
     public partial class ProfileForm : Form {
-        // Fields used for an add
-        public string FileId { get; set; }
-
-        // Fields used for an edit
-        private Profile _Profile;
+        public Profile Profile;
 
         public ProfileForm(string bank) {
             InitializeComponent();
@@ -19,7 +15,7 @@ namespace Mentha.Forms {
         public ProfileForm(Profile profile) {
             InitializeComponent();
 
-            this._Profile = profile;
+            this.Profile = profile;
             txtCardNumber.Text = profile.CardNumber;
             txtDescription.Text = profile.Description;
             txtPassword.Text = profile.Password;
@@ -54,22 +50,18 @@ namespace Mentha.Forms {
             }
 
             // Check if we're adding a new profile
-            if (_Profile == null) {
-                // Generate a new file id
-                FileId = Guid.NewGuid().ToString();
-
+            if (Profile == null) {
                 // Setup the new profile
-                _Profile = new Profile(FileId) {
+                Profile = new Profile() {
                     Bank = this.Text,
                 };
             }
 
             // Update the details and save the file
-            _Profile.CardNumber = txtCardNumber.Text.Trim();
-            _Profile.Description = txtDescription.Text.Trim();
-            _Profile.Password = txtPassword.Text.Trim();
-            _Profile.Save();
-
+            Profile.CardNumber = txtCardNumber.Text.Trim();
+            Profile.Description = txtDescription.Text.Trim();
+            Profile.Password = txtPassword.Text.Trim();
+            
             // Let the main window know everything is good
             DialogResult = DialogResult.OK;
         }

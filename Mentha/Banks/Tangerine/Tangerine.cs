@@ -107,7 +107,7 @@ namespace Mentha.Banks.Tangerine {
                                 Answer = ChallengeAnswer,
                                 Question = ChallengeQuestion,
                             });
-                            profile.Save();
+                            Globals.Settings.Save();
                         }
 
                         // Parse accounts
