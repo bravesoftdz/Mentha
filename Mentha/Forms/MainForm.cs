@@ -112,7 +112,11 @@ namespace Mentha.Forms {
                     Directory.CreateDirectory(DataDirectory);
                 }
 
+RetryLoad:
+
                 // Load saved profiles
+                // TODOX This is slow because key stretching is done per-file.  Maybe there should be Globals.Profiles, and that
+                //       should be saved into one single data file?  It's not like individual files offers any benefit
                 int CryptographicExceptions = 0;
                 int FileCount = 0;
                 int OtherExceptions = 0;
@@ -130,8 +134,11 @@ namespace Mentha.Forms {
                 SortGroups();
 
                 // Check for exceptions while loading the profiles
-                // TODOX If all exceptions are cryptographic exceptions, clear the master password and try again
-                if (CryptographicExceptions + OtherExceptions > 0) {
+                if (CryptographicExceptions == FileCount) {
+                    MessageBox.Show("That doesn't appear to be the correct Master Password, please try again.");
+                    Globals.MasterPassword = string.Empty;
+                    goto RetryLoad; // Yeah I just used a goto
+                } else if (CryptographicExceptions + OtherExceptions > 0) {
                     MessageBox.Show($"Exceptions were encountered while loading your saved profile information:\r\n\r\nFiles Read: {FileCount}\r\nCryptographic Exceptions: {CryptographicExceptions}\r\nOther Exceptions: {OtherExceptions}\r\n\r\nCryptographic Exceptions are likely caused by entering an invalid Master Password, or corrupt data file.\r\nOther Exceptions are unexpected and unknown in nature.\r\n\r\nMentha will now terminate.");
                     Application.Exit();
                 }
