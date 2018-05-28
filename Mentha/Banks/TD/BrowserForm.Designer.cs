@@ -114,7 +114,7 @@
             this.WebBrowser.Size = new System.Drawing.Size(1004, 584);
             this.WebBrowser.TabIndex = 0;
             this.WebBrowser.Url = new System.Uri("https://easyweb.td.com/", System.UriKind.Absolute);
-            this.WebBrowser.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.WebBrowser_DocumentCompleted);
+            this.WebBrowser.Navigated += new System.Windows.Forms.WebBrowserNavigatedEventHandler(this.WebBrowser_Navigated);
             // 
             // tmrScrape
             // 

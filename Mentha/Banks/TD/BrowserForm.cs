@@ -53,14 +53,17 @@ namespace Mentha.Banks.TD {
                     string Name = Row.GetElementsByTagName("th")[0].InnerText;
 
                     // Sometimes balance is something like "USD&nbsp;$0.00", so try to parse out just the dollar amount
-                    var BalanceText = Row.GetElementsByTagName("td")[0].InnerText;
-                    Match M = Regex.Match(BalanceText, "([$][0-9,]*[.][0-9]{2})");
+                    var BalanceText = Row.GetElementsByTagName("td")[0].InnerText.Trim();
+                    Match M = Regex.Match(BalanceText, "([(]?[$][0-9,]*[.][0-9]{2}[)]?)");
                     if (M.Success) {
                         BalanceText = M.Groups[1].Value; 
                     }
 
-                    if (!double.TryParse(BalanceText.Replace("$", "").Replace(",", ""), out double Balance)) {
+                    if (!double.TryParse(BalanceText.Replace("(", "").Replace("$", "").Replace(",", "").Replace(")", ""), out double Balance)) {
                         Balance = 999999999.99;
+                    }
+                    if (BalanceText.StartsWith("(") && BalanceText.EndsWith(")")) {
+                        Balance *= -1;
                     }
                     if (flipSign) {
                         Balance *= -1;
@@ -179,7 +182,7 @@ namespace Mentha.Banks.TD {
             }
         }
 
-        private void WebBrowser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e) {
+        private void WebBrowser_Navigated(object sender, WebBrowserNavigatedEventArgs e) {
             txtUrl.Text = WebBrowser.Url.ToString();
         }
     }

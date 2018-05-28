@@ -1,6 +1,7 @@
 ﻿// TODOX A debug log window -- all activities should log to a global list, which can then be populated in a richtextbox on demand
 // TODOX Edit/Delete profiles
 // TODOX Load/Save Globals.Settings.Form*
+// TODOX Download OFX files to allow easy import of transactions into MS Money
 
 using Mentha.Banks;
 using Mentha.Code;
