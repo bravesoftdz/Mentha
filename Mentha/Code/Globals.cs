@@ -11,7 +11,9 @@ namespace Mentha.Code {
             // Add supported banks to list
             Banks.AddRange(new BaseBank[] {
                 new Banks.CIBC.CIBC(),
-                new Banks.Simplii.Simplii(),
+                // TODOX They changed something after they got hacked, and now I always get a 403 while logging in
+                // Need to investigate what changed...
+                // new Banks.Simplii.Simplii(),
                 new Banks.Tangerine.Tangerine(),
                 new Banks.TD.TD(),
             });
