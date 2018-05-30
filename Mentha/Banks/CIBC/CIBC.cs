@@ -53,8 +53,6 @@ namespace Mentha.Banks.CIBC {
                         // Destroy the session
                         ResponseText = await DeleteAsync(HC, SessionsUrl);
                     }
-                } else if (Response.StatusCode == System.Net.HttpStatusCode.Forbidden) {
-                    throw new Exception("Invalid card number or password");
                 } else {
                     throw new Exception($"Unexpected response status: '{Response.StatusCode}'");
                 }
